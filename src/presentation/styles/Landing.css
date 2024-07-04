@@ -9,6 +9,71 @@
 	background-repeat: no-repeat;
 	transition: 0.4s;
 }
+
 .hover-effect:hover {
 	background-size: 100% 100%;
+}
+
+.audio-recorder {
+	margin: auto;
+	border-radius: 10%;
+	width: 55px;
+	background-color: #00f0ff;
+	animation: breathing-neon 3s ease-in-out infinite alternate;
+	box-shadow: 0 0 5px #00f0ff, /* Inner blue glow */ 0 0 10px #00ffff,
+		/* Outer blue glow */ 0 0 20px #4fcfff,
+		/* Even fainter outer glow */ 0 0 30px #80ffff; /* Faintest outer glow */
+}
+
+.recording {
+	border-radius: 12px !important;
+	width: 350px;
+}
+
+.audio-recorder-options {
+	height: 20px;
+}
+
+.audio-recorder-mic {
+	height: 30px;
+}
+
+.audio-recorder-timer {
+	font-size: 20px;
+}
+
+.card-companion {
+	width: 100%;
+	height: 600px;
+	border-color: transparent;
+}
+
+.neon-border {
+	border: 2px solid #007bff; /* Base blue color */
+	border-radius: 5px; /* Add some roundness */
+	animation: breathing-neon 3s ease-in-out infinite alternate;
+	box-shadow: 0 0 5px #00f0ff, /* Inner blue glow */ 0 0 10px #00ffff,
+		/* Outer blue glow */ 0 0 20px #4fcfff,
+		/* Even fainter outer glow */ 0 0 30px #80ffff; /* Faintest outer glow */
+}
+
+@keyframes breathing-neon {
+	from {
+		box-shadow: 0 0 5px #40008a, 0 0 10px #40008a, 0 0 20px #40008a,
+			0 0 40px #40008a;
+	}
+	to {
+		box-shadow: 0 0 3px #00f0ff, 0 0 5px #00ffff, 0 0 10px #4fcfff,
+			0 0 15px #80ffff;
+	}
+}
+
+.rhap_time,
+.rhap_repeat-button,
+.rhap_volume-button {
+	color: white;
+}
+
+.rhap_main-controls-button {
+	color: #00ffff;
 }
