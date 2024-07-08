@@ -113,7 +113,7 @@ function Landing() {
 							<AudioPlayer
 								className="bg-secondary-subtle"
 								autoPlay={true}
-								src={response?.response}
+								src={response?.speech_url}
 								onPlay={e => console.log("onPlay")}
 							/>
 						</Col>

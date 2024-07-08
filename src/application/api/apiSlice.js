@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const apiSlice = createApi({
 	reducerPath: "api",
 	baseQuery: fetchBaseQuery({
-		baseUrl: "http://localhost:8000/atom-ai/", // MockApi "https://662e73e9a7dda1fa378d0185.mockapi.io/api/v1/",
+		baseUrl: "http://localhost:8000/atom-ai/sample-voice/", // MockApi "https://662e73e9a7dda1fa378d0185.mockapi.io/api/v1/",
 	}),
 
 	endpoints: builder => ({
