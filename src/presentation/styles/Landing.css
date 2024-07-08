@@ -53,14 +53,14 @@
 	border-radius: 5px; /* Add some roundness */
 	animation: breathing-neon 3s ease-in-out infinite alternate;
 	box-shadow: 0 0 5px #00f0ff, /* Inner blue glow */ 0 0 10px #00ffff,
-		/* Outer blue glow */ 0 0 20px #4fcfff,
-		/* Even fainter outer glow */ 0 0 30px #80ffff; /* Faintest outer glow */
+		/* Outer blue glow */ 0 0 15px #4fcfff,
+		/* Even fainter outer glow */ 0 0 20px #80ffff; /* Faintest outer glow */
 }
 
 @keyframes breathing-neon {
 	from {
-		box-shadow: 0 0 5px #40008a, 0 0 10px #40008a, 0 0 20px #40008a,
-			0 0 40px #40008a;
+		box-shadow: 0 0 5px #40008a, 0 0 10px #40008a, 0 0 15px #40008a,
+			0 0 20px #40008a;
 	}
 	to {
 		box-shadow: 0 0 3px #00f0ff, 0 0 5px #00ffff, 0 0 10px #4fcfff,
