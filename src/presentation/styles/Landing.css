@@ -77,3 +77,7 @@
 .rhap_main-controls-button {
 	color: #00ffff;
 }
+
+.modal-content {
+	background-color: rgb(22, 23, 25, 1);
+}

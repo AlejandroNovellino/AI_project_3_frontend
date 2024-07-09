@@ -1,10 +1,12 @@
 // react imports
-//import { useState } from "react";
+import { useState } from "react";
 // react bootstrap imports
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import Modal from "react-bootstrap/Modal";
+import Alert from "react-bootstrap/Alert";
 // react three
 import Companion from "../components/Companion";
 // react audio player
@@ -24,6 +26,10 @@ import { quantum } from "ldrs";
 quantum.register();
 
 function Landing() {
+	// state for messages
+	const [textResponses, setTextResponses] = useState([]);
+	const [isPlaying, setIsPlaying] = useState(false);
+	const [show, setShow] = useState(false);
 	// redux
 	const [
 		talkToMorganAI,
@@ -37,8 +43,6 @@ function Landing() {
 
 	// onsubmit function
 	const submitMessageToMorgan = async audio => {
-		console.log(`🚀 ~ onSubmitMessageToMorgan ~ audio:`, audio);
-
 		if (!audio) {
 			// print the error
 			console.error("Please upload something");
@@ -50,7 +54,17 @@ function Landing() {
 		if (!isLoadingResponse) {
 			try {
 				// use the redux hook
-				await talkToMorganAI(audio).unwrap();
+				let ai_response = await talkToMorganAI(audio).unwrap();
+				console.log(`🚀 ~ submitMessageToMorgan ~ ai_response:`, ai_response);
+
+				// when the result is ok save the text to display
+				setTextResponses([
+					...textResponses,
+					{
+						user: ai_response?.input_text,
+						ai: ai_response?.response_text,
+					},
+				]);
 			} catch (err) {
 				// print the error
 				console.error("Could not talk to the AI: ", err);
@@ -59,16 +73,38 @@ function Landing() {
 	};
 
 	const handleSubmit = async blob => {
-		console.log(`🚀 ~ handleSubmit ~ blob:`, blob);
 		await submitMessageToMorgan(blob);
 	};
 
 	// print to see the response
 	console.log(`🚀 ~ onMain ~ response:`, response);
+	console.log(`🚀 ~ onMain ~ textResponses:`, textResponses);
+	console.log(`🚀 ~ onMain ~ isPlaying:`, isPlaying);
 
 	return (
 		<Container fluid className={"vh-100"}>
-			<MyNavbar />
+			<MyNavbar handleShow={setShow} />
+
+			<Modal
+				className="bg-secondary-subtle"
+				show={show}
+				fullscreen={true}
+				onHide={() => setShow(false)}>
+				<Modal.Header closeButton>
+					<Modal.Title>Messages in the conversation</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					{textResponses.map((textResponse, index) => {
+						return (
+							<div key={index}>
+								<Alert variant="light">{`You: ${textResponse.user}`}</Alert>
+								<Alert variant="info">{`Atom: ${textResponse.ai}`}</Alert>
+							</div>
+						);
+					})}
+				</Modal.Body>
+			</Modal>
+
 			<Container fluid>
 				<Row className="justify-content-center vh-20">
 					<Col></Col>
@@ -83,6 +119,7 @@ function Landing() {
 									rotationIntensity={1}
 									isLoading={isLoadingResponse}
 									eyeColor={isLoadingResponse ? [40, 0.8, 50] : [3, 0.5, 3]}
+									isPlaying={isPlaying}
 								/>
 							</Card.Body>
 						</Card>
@@ -114,7 +151,9 @@ function Landing() {
 								className="bg-secondary-subtle"
 								autoPlay={true}
 								src={response?.speech_url}
-								onPlay={e => console.log("onPlay")}
+								onPlay={e => setIsPlaying(true)}
+								onEnded={e => setIsPlaying(false)}
+								onPause={e => setIsPlaying(false)}
 							/>
 						</Col>
 					)}

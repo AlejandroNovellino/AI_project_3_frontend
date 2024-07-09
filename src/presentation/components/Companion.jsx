@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useState, useMemo, useRef } from "react";
+import { /*useState,*/ useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Trail, Float, Line, Sphere, Stars } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
@@ -9,10 +9,15 @@ export default function Companion(props) {
 		<Canvas camera={{ position: [0, 0, 10] }}>
 			<color attach="background" args={["black"]} />
 			<Float
-				speed={props.speed}
-				rotationIntensity={props.rotationIntensity}
-				floatIntensity={props.floatIntensity}>
-				<Atom isLoading={props.isLoading} eyeColor={props.eyeColor} />
+				speed={props.isPlaying ? 10 : props.speed}
+				rotationIntensity={props.isPlaying ? 1.5 : props.rotationIntensity}
+				floatIntensity={props.isPlaying ? 7 : props.floatIntensity}
+				scale={props.isPlaying ? 1.15 : 1}>
+				<Atom
+					isLoading={props.isLoading}
+					eyeColor={props.eyeColor}
+					isPlaying={props.isPlaying}
+				/>
 			</Float>
 			<Stars saturation={0} count={400} speed={0.5} />
 			<EffectComposer>
@@ -23,17 +28,17 @@ export default function Companion(props) {
 }
 
 function Atom(props) {
-	console.log(`🚀 ~ Atom ~ props:`, props.eyeColor);
 	// Hold state for hovered and clicked events
 	//const [hovered, hover] = useState(false);
-	const [clicked, click] = useState(false);
-
+	//const [clicked, click] = useState(false);
 	// Ref
 	const ref = useRef();
 
-	useFrame((state, delta) =>
-		props.isLoading ? (ref.current.rotation.z += delta) : null
-	);
+	useFrame((state, delta) => {
+		if (props.isLoading) {
+			ref.current.rotation.z += delta;
+		}
+	});
 
 	const points = useMemo(
 		() =>
@@ -60,16 +65,19 @@ function Atom(props) {
 				lineWidth={0.3}
 				rotation={[0, 0, -1]}
 			/>
-			<Electron position={[0, 0, 0.5]} speed={6} />
+			<Electron
+				position={[0, 0, 0.5]}
+				speed={props.isPlaying || props.isLoading ? 6 : 4}
+			/>
 			<Electron
 				position={[0, 0, 0.5]}
 				rotation={[0, 0, Math.PI / 3]}
-				speed={6.5}
+				speed={props.isPlaying || props.isLoading ? 6.5 : 4.5}
 			/>
 			<Electron
 				position={[0, 0, 0.5]}
 				rotation={[0, 0, -Math.PI / 3]}
-				speed={7}
+				speed={props.isPlaying || props.isLoading ? 7 : 5}
 			/>
 			<Sphere args={[0.55, 64, 64]}>
 				<meshBasicMaterial color={props.eyeColor} toneMapped={false} />
